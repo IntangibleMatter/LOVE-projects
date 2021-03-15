@@ -1,4 +1,3 @@
-
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.window.setMode(500, 500, {resizable = true, minwidth = 500, minheight = 500})
@@ -34,13 +33,13 @@ end
 --Management functinos
 function getText() --sets the text that should be drawn and where
     if Directions.Up then
-        TextDraw = {text = "Hold", x = 56, y = 238}
+        TextDraw = {text = "Hold", TextPos.HoldL.x, TextPos.HoldL.y}
     elseif Directions.Down then
-        TextDraw = {text = "Hold", x = 381, y = 238}
+        TextDraw = {text = "Hold", TextPos.HoldR.x, TextPos.HoldR.y}
     elseif Directions.Left then
-        TextDraw = {text = "In", x = 238, y = 56}
+        TextDraw = {text = "In", TextPos.In.x, TextPos.In.y}
     elseif Directions.Right then
-        TextDraw = {text = "Out", x = 224, y = 419}
+        TextDraw = {text = "Out", TextPos.Out.x, TextPos.Out.y}
     end
 end
 
@@ -96,7 +95,7 @@ end
     Speed = 1.5 * scale
     DotSize = 2 * scale
     --scale Bounds
-    Bounds.TopL = Bounds.TopL * scale
+    Bounds.TopL = 50 * scale
     Bounds.BotR = Bounds.TopL + Size
     --text vars
     --TextPos = {HoldL = {x = 56, y = 238}, HoldR = {x = 381, y = 238}, In = {x = 238, y = 56}, Out = {x = 224, y = 419}, Breathe = {x = 196, y = 238}}
