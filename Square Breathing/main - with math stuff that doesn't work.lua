@@ -13,6 +13,7 @@ function love.load()
     ExTextX = 1
     ExTextY = 1
     Bounds = {TopL = 50, BotR = 450} --the bounds for the movement of the dot. These should be equal to the top left and bottom righ corners of the square
+    PrevSize = 1
 end
 --DRAW TEXT AT POSITIONS AND MOVING DOT
 function love.draw()
@@ -33,33 +34,33 @@ end
 --Management functinos
 function getText() --sets the text that should be drawn and where
     if Directions.Up then
-        TextDraw = {text = "Hold", TextPos.HoldL.x, TextPos.HoldL.y}
+        TextDraw = {text = "Hold", x = TextPos.HoldL.x, y = TextPos.HoldL.y}
     elseif Directions.Down then
-        TextDraw = {text = "Hold", TextPos.HoldR.x, TextPos.HoldR.y}
+        TextDraw = {text = "Hold", x = TextPos.HoldR.x, y = TextPos.HoldR.y}
     elseif Directions.Left then
-        TextDraw = {text = "In", TextPos.In.x, TextPos.In.y}
+        TextDraw = {text = "In", x = TextPos.In.x, y = TextPos.In.y}
     elseif Directions.Right then
-        TextDraw = {text = "Out", TextPos.Out.x, TextPos.Out.y}
+        TextDraw = {text = "Out", x = TextPos.Out.x,  y = TextPos.Out.y}
     end
 end
 
 function updateDotPos() --changes the position of the dot
-    if DotPos.x >= Bounds.BotR then --is the dot at the right edge or past it?
+    if DotPos.x >= Bounds.BotR or ((DotPos.x <= Bounds.BotR) and Directions.Down) then --is the dot at the right edge or past it?
         DotPos.x = Bounds.BotR --stay on the right edge
         Directions.Down = true -- move downward along that edge
         Directions.Right = false -- stop moving right
     end
-    if DotPos.y >= Bounds.BotR then --is the dot at the bottom edge or past it?
+    if DotPos.y >= Bounds.BotR or ((DotPos.y <= Bounds.BotR) and Directions.Left) then --is the dot at the bottom edge or past it?
         DotPos.y = Bounds.BotR --stay on the bottom edge
         Directions.Left = true -- move left along that edge
         Directions.Down = false -- stop moving down
     end
-    if DotPos.x <= Bounds.TopL then --is the dot at the left edge or past it?
+    if DotPos.x <= Bounds.TopL or ((DotPos.x >= Bounds.TopL) and Directions.Up) then --is the dot at the left edge or past it?
         DotPos.x = Bounds.TopL -- stay on the left edge
         Directions.Up = true -- move up along that edge
         Directions.Left = false -- stop moving left
     end
-    if DotPos.y <= Bounds.TopL then --is the dot at the top edge or past it?
+    if DotPos.y <= Bounds.TopL or ((DotPos.y >= Bounds.TopL) and Directions.Right) then --is the dot at the top edge or past it?
         DotPos.y = Bounds.TopL --stay on the top edge
         Directions.Right = true -- move right along that edge
         Directions.Up = false -- stop moving up
@@ -109,6 +110,9 @@ end
     TextPos.Out.y = 419 * scale
     TextPos.Breathe.x = 196 * scale
     TextPos.Breathe.y = 238 * scale
-    DotPos.x = DotPos.x * scale
-    DotPos.y = DotPos.y * scale
+    if not (PrevSize <= scale) then
+        PrevSize = scale
+        DotPos.x = DotPos.x * scale
+        DotPos.y = DotPos.y * scale
+    end
 end
